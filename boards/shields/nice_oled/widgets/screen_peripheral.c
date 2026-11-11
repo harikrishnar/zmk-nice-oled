@@ -17,6 +17,12 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include "battery.h"
 #include "output.h"
 #include "screen_peripheral.h"
+#include "util.h"
+
+#if IS_ENABLED(CONFIG_NICE_OLED_WIDGET_PERIPHERAL_NAME)
+#include <fonts.h>
+#include <string.h>
+#endif
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
@@ -43,6 +49,31 @@ static struct zmk_widget_luna luna_widget;
  * Draw canvas
  **/
 
+/**
+ * Name label
+ **/
+
+#if IS_ENABLED(CONFIG_NICE_OLED_WIDGET_PERIPHERAL_NAME)
+#define NAME_WIDTH 32
+
+// 12pt fits 5 monospace characters in 32px; longer lines fall back to 8pt.
+static int draw_name_line(lv_obj_t *canvas, int y, const char *text) {
+    lv_draw_label_dsc_t label_dsc;
+    bool small = strlen(text) > 5;
+    init_label_dsc(&label_dsc, LVGL_FOREGROUND,
+                   small ? &pixel_operator_mono_8 : &pixel_operator_mono_12, LV_TEXT_ALIGN_CENTER);
+    lv_canvas_draw_text(canvas, CONFIG_NICE_OLED_WIDGET_PERIPHERAL_NAME_CUSTOM_X, y, NAME_WIDTH,
+                        &label_dsc, text);
+    return small ? 9 : 12;
+}
+
+static void draw_name(lv_obj_t *canvas) {
+    int y = CONFIG_NICE_OLED_WIDGET_PERIPHERAL_NAME_CUSTOM_Y;
+    y += draw_name_line(canvas, y, CONFIG_NICE_OLED_WIDGET_PERIPHERAL_NAME_LINE1);
+    draw_name_line(canvas, y, CONFIG_NICE_OLED_WIDGET_PERIPHERAL_NAME_LINE2);
+}
+#endif
+
 static void draw_canvas(lv_obj_t *widget, lv_color_t cbuf[], const struct status_state *state) {
     lv_obj_t *canvas = lv_obj_get_child(widget, 0);
 
@@ -50,6 +81,9 @@ static void draw_canvas(lv_obj_t *widget, lv_color_t cbuf[], const struct status
     draw_background(canvas);
     draw_output_status(canvas, state);
     draw_battery_status(canvas, state);
+#if IS_ENABLED(CONFIG_NICE_OLED_WIDGET_PERIPHERAL_NAME)
+    draw_name(canvas);
+#endif
 
     // Rotate for horizontal display
     rotate_canvas(canvas, cbuf);

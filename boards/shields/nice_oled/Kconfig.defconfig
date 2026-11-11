@@ -168,6 +168,32 @@ endif # NICE_OLED_WIDGET_STATIC_IMAGE_PERIPHERAL
 
 endif # NICE_OLED_WIDGET_ANIMATION_PERIPHERAL || NICE_OLED_WIDGET_STATIC_IMAGE_PERIPHERAL
 
+### PERIPHERAL NAME {{{
+config NICE_OLED_WIDGET_PERIPHERAL_NAME
+    bool "Show a two-line text name on the peripheral screen"
+    default n
+
+if NICE_OLED_WIDGET_PERIPHERAL_NAME
+
+config NICE_OLED_WIDGET_PERIPHERAL_NAME_LINE1
+    string "First line (8pt font if wider than 5 characters)"
+    default "MY"
+
+config NICE_OLED_WIDGET_PERIPHERAL_NAME_LINE2
+    string "Second line (8pt font if wider than 5 characters)"
+    default "CORNE"
+
+config NICE_OLED_WIDGET_PERIPHERAL_NAME_CUSTOM_X
+    int "Name X position"
+    default 0
+
+config NICE_OLED_WIDGET_PERIPHERAL_NAME_CUSTOM_Y
+    int "Name Y position (top of first line)"
+    default 128
+
+endif # NICE_OLED_WIDGET_PERIPHERAL_NAME
+##}}}
+
 # CONFIG_NICE_OLED_WIDGET_PERIPHERAL
 config NICE_OLED_WIDGET_PERIPHERAL
     bool "Enable test widget on peripheral"
