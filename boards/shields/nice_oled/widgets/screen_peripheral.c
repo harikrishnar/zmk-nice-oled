@@ -56,8 +56,9 @@ static struct zmk_widget_luna luna_widget;
 #if IS_ENABLED(CONFIG_NICE_OLED_WIDGET_PERIPHERAL_NAME)
 #define NAME_WIDTH 32
 
-// 12pt fits 5 monospace characters in 32px. Both lines share one font so
-// they match: 12pt if both fit, otherwise 8pt.
+// Same 16pt font as the layer name on the central. Its glyphs are 5px wide
+// with 3px gaps, so tightening spacing by 2px fits 5 characters in 32px.
+// Lines longer than 5 characters fall back to 8pt. Both lines share a font.
 static void draw_name(lv_obj_t *canvas) {
     const char *line1 = CONFIG_NICE_OLED_WIDGET_PERIPHERAL_NAME_LINE1;
     const char *line2 = CONFIG_NICE_OLED_WIDGET_PERIPHERAL_NAME_LINE2;
@@ -66,11 +67,14 @@ static void draw_name(lv_obj_t *canvas) {
 
     lv_draw_label_dsc_t label_dsc;
     init_label_dsc(&label_dsc, LVGL_FOREGROUND,
-                   small ? &pixel_operator_mono_8 : &pixel_operator_mono_12, LV_TEXT_ALIGN_CENTER);
+                   small ? &pixel_operator_mono_8 : &pixel_operator_mono_16, LV_TEXT_ALIGN_CENTER);
+    if (!small) {
+        label_dsc.letter_space = -2;
+    }
     lv_canvas_draw_text(canvas, CONFIG_NICE_OLED_WIDGET_PERIPHERAL_NAME_CUSTOM_X, y, NAME_WIDTH,
                         &label_dsc, line1);
     lv_canvas_draw_text(canvas, CONFIG_NICE_OLED_WIDGET_PERIPHERAL_NAME_CUSTOM_X,
-                        y + (small ? 9 : 12), NAME_WIDTH, &label_dsc, line2);
+                        y + (small ? 9 : 14), NAME_WIDTH, &label_dsc, line2);
 }
 #endif
 
