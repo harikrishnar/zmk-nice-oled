@@ -170,26 +170,30 @@ endif # NICE_OLED_WIDGET_ANIMATION_PERIPHERAL || NICE_OLED_WIDGET_STATIC_IMAGE_P
 
 ### PERIPHERAL NAME {{{
 config NICE_OLED_WIDGET_PERIPHERAL_NAME
-    bool "Show a two-line text name on the peripheral screen"
+    bool "Show a name on the peripheral screen, one big letter per row"
     default n
 
 if NICE_OLED_WIDGET_PERIPHERAL_NAME
 
-config NICE_OLED_WIDGET_PERIPHERAL_NAME_LINE1
-    string "First line (both lines use 8pt if either is over 5 characters)"
-    default "MY"
+config NICE_OLED_WIDGET_PERIPHERAL_NAME_TEXT
+    string "Name, drawn top to bottom"
+    default "ZMK"
 
-config NICE_OLED_WIDGET_PERIPHERAL_NAME_LINE2
-    string "Second line (both lines use 8pt if either is over 5 characters)"
-    default "CORNE"
+config NICE_OLED_WIDGET_PERIPHERAL_NAME_SCALE_X
+    int "Horizontal pixel scale of the 16pt font"
+    default 2
 
-config NICE_OLED_WIDGET_PERIPHERAL_NAME_CUSTOM_X
-    int "Name X position"
-    default 0
+config NICE_OLED_WIDGET_PERIPHERAL_NAME_SCALE_Y
+    int "Vertical pixel scale of the 16pt font"
+    default 2
+
+config NICE_OLED_WIDGET_PERIPHERAL_NAME_GAP
+    int "Pixels between letters"
+    default 4
 
 config NICE_OLED_WIDGET_PERIPHERAL_NAME_CUSTOM_Y
-    int "Name Y position (top of first line)"
-    default 128
+    int "Y position of the first letter"
+    default 68
 
 endif # NICE_OLED_WIDGET_PERIPHERAL_NAME
 ##}}}
