@@ -176,11 +176,11 @@ config NICE_OLED_WIDGET_PERIPHERAL_NAME
 if NICE_OLED_WIDGET_PERIPHERAL_NAME
 
 config NICE_OLED_WIDGET_PERIPHERAL_NAME_LINE1
-    string "First line (8pt font if wider than 5 characters)"
+    string "First line (both lines use 8pt if either is over 5 characters)"
     default "MY"
 
 config NICE_OLED_WIDGET_PERIPHERAL_NAME_LINE2
-    string "Second line (8pt font if wider than 5 characters)"
+    string "Second line (both lines use 8pt if either is over 5 characters)"
     default "CORNE"
 
 config NICE_OLED_WIDGET_PERIPHERAL_NAME_CUSTOM_X
